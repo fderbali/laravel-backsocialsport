@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Activite extends Model
 {
     use HasFactory;
+    public function __construct()
+    {
+        $this->table = "activite";
+    }
 }
