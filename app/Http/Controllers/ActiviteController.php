@@ -36,7 +36,7 @@ class ActiviteController extends Controller
      */
     public function show($id)
     {
-        //
+        return Activite::find($id);
     }
 
     /**
