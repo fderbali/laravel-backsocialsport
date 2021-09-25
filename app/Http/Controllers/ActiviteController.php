@@ -14,7 +14,7 @@ class ActiviteController extends Controller
      */
     public function index()
     {
-        return Activite::all();
+        return Activite::orderByDesc('id')->get();
     }
 
     /**
@@ -25,40 +25,55 @@ class ActiviteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Activite::create($request->all())) {
+            return response()->json([
+                "success" => true,
+                "message" => "Activité enregistrée avec succès !"
+            ], 200);
+        } else {
+            return response()->json([
+                "success" => false,
+                "message" => "Une erreur s'est produite, veuillez réessayer plus tard !"
+            ], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Activite  $activite
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Activite $activite)
     {
-        return Activite::find($id);
+        return $activite;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Activite  $activite
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Activite $activite)
     {
-        //
+        if ($activite->update($request->all())) {
+            return response()->json([
+                "succès" => true,
+                "message" => "Activité modifié avec succès !",
+            ], 200);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Activite  $activite
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Activite $activite)
     {
-        //
+        $activite->delete();
     }
 }
