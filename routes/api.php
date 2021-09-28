@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MembreController;
 use App\Http\Controllers\ActiviteController;
 
 /*
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResources([
     'activite' => ActiviteController::class,
 ]);
+Route::get("/membre/{id}/activite", [MembreController::class, 'getActivites']);

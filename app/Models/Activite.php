@@ -12,4 +12,8 @@ class Activite extends Model
     protected $table = "activite";
     protected $fillable = ["nom", "lieu", "nombre", "id_categorie", "debut", "fin", "description"];
     public $timestamps = false;
+    public function membre()
+    {
+        return $this->belongsTo(Membre::class, "id_membre");
+    }
 }
