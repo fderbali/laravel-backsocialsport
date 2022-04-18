@@ -14,7 +14,7 @@ class MembreController extends Controller
      */
     public function index()
     {
-        //
+        return Membre::orderByDesc("id")->get();
     }
 
     /**
@@ -25,7 +25,17 @@ class MembreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Membre::create($request->all())) {
+            return response()->json([
+                "success" => true,
+                "message" => "Membre enregistrée avec succès !"
+            ], 200);
+        } else {
+            return response()->json([
+                "success" => false,
+                "message" => "Une erreur s'est produite, veuillez réessayer plus tard !"
+            ], 500);
+        }
     }
 
     /**
@@ -36,7 +46,7 @@ class MembreController extends Controller
      */
     public function show(Membre $membre)
     {
-        //
+        return $membre;
     }
 
     /**
@@ -48,7 +58,12 @@ class MembreController extends Controller
      */
     public function update(Request $request, Membre $membre)
     {
-        //
+        if ($membre->update($request->all())) {
+            return response()->json([
+                "succes" => true,
+                "message" => "Membre modifié avec succès !",
+            ], 200);
+        }
     }
 
     /**
@@ -59,7 +74,7 @@ class MembreController extends Controller
      */
     public function destroy(Membre $membre)
     {
-        //
+        $membre->delete();
     }
 
     public function getActivites($id)

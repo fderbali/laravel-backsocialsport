@@ -60,7 +60,7 @@ class ActiviteController extends Controller
     {
         if ($activite->update($request->all())) {
             return response()->json([
-                "succès" => true,
+                "succes" => true,
                 "message" => "Activité modifié avec succès !",
             ], 200);
         }
@@ -75,5 +75,10 @@ class ActiviteController extends Controller
     public function destroy(Activite $activite)
     {
         $activite->delete();
+    }
+    public function getParticipants($id)
+    {
+        $activite = Activite::find($id);
+        return $activite->participants;
     }
 }

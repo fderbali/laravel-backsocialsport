@@ -23,4 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResources([
     'activite' => ActiviteController::class,
 ]);
+Route::apiResources([
+    'membre' => MembreController::class,
+]);
 Route::get("/membre/{id}/activite", [MembreController::class, 'getActivites']);
+Route::get("/membre/inscrire", [MembreController::class, 'inscrire']);
+Route::get("/activite/{id}/participant", [ActiviteController::class, 'getParticipants']);
