@@ -19,6 +19,6 @@ class Activite extends Model
 
     public function participants()
     {
-        return $this->belongsToMany(Participant::class, "participe", "id_activite", "id_membre");
+        return $this->belongsToMany(Membre::class, "participe", "id_activite", "id_membre");
     }
 }

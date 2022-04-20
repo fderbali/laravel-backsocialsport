@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
+use App\Models\Membre;
 use Illuminate\Http\Request;
 
 class ActiviteController extends Controller
@@ -25,16 +26,28 @@ class ActiviteController extends Controller
      */
     public function store(Request $request)
     {
-        if (Activite::create($request->all())) {
-            return response()->json([
-                "success" => true,
-                "message" => "Activité enregistrée avec succès !"
-            ], 200);
-        } else {
-            return response()->json([
-                "success" => false,
-                "message" => "Une erreur s'est produite, veuillez réessayer plus tard !"
-            ], 500);
+        $membres = Membre::select('*')
+            ->where('email', '=', $request->userConnected)
+            ->get();
+        if ($membres->count()) {
+            $activite = new Activite();
+            $activite->fill($request->all());
+            $activite->id_membre = $membres[0]->id;
+            $activite->id_categorie = $request->categorie;
+            $activite->debut = $request->date_debut_activite;
+            $activite->fin  = $request->date_fin_activite;
+            if ($activite->save()) {
+                return response()->json([
+                    "success" => true,
+                    "insert_id" => $activite->id,
+                    "message" => "Activité enregistrée avec succès !"
+                ]);
+            } else {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Une erreur s'est produite, veuillez réessayer plus tard !"
+                ]);
+            }
         }
     }
 
@@ -62,7 +75,7 @@ class ActiviteController extends Controller
             return response()->json([
                 "succes" => true,
                 "message" => "Activité modifié avec succès !",
-            ], 200);
+            ]);
         }
     }
 
@@ -76,9 +89,25 @@ class ActiviteController extends Controller
     {
         $activite->delete();
     }
+
+    /**
+     * get members participating to the activity !
+     * @param $id
+     * @return mixed
+     */
     public function getParticipants($id)
     {
         $activite = Activite::find($id);
         return $activite->participants;
+    }
+
+    public function organisateur($id)
+    {
+        $activite = Activite::find($id);
+        $membre = Membre::find($activite->id_membre);
+        if($membre){
+            return $membre;
+        }
+        return response()->json(['success' => false]);
     }
 }

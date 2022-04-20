@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CourrielController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MembreController;
@@ -26,6 +28,18 @@ Route::apiResources([
 Route::apiResources([
     'membre' => MembreController::class,
 ]);
+Route::post("/membre/login", [MembreController::class, 'login']);
+
 Route::get("/membre/{id}/activite", [MembreController::class, 'getActivites']);
-Route::get("/membre/inscrire", [MembreController::class, 'inscrire']);
+Route::post("membre/check_inscription", [MembreController::class, 'checkInscription']);
+Route::post("/membre/inscrire", [MembreController::class, 'inscrire']);
+Route::post("/membre/desinscrire", [MembreController::class, 'desinscrire']);
 Route::get("/activite/{id}/participant", [ActiviteController::class, 'getParticipants']);
+Route::get("/activite/{id}/organisateur", [ActiviteController::class, 'organisateur']);
+Route::get("/categorie", [CategorieController::class, 'categories']);
+
+Route::get("/membre/{membre}/courriels", [CourrielController::class, 'courriels']);
+Route::get("/membre/{membre}/sentcourriels", [CourrielController::class, 'sentCourriels']);
+Route::get("/courriel/{courriel}", [CourrielController::class, 'getCourriel']);
+Route::post("sendcourriel", [CourrielController::class, 'sendCourriel']);
+Route::get("courriel/{courriel}/mark_as_read", [CourrielController::class, 'markAsRead']);

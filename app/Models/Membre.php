@@ -15,4 +15,10 @@ class Membre extends Model
     {
         return $this->hasMany(Activite::class, "id_membre");
     }
+    public function courriels(){
+        return $this->hasMany(Courriel::Class, "id_destinataire");
+    }
+    public function sentCourriels(){
+        return $this->hasMany(Courriel::Class, "id_expediteur");
+    }
 }
